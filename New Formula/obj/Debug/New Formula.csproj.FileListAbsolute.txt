@@ -1,9 +1,9 @@
 C:\Users\C\Desktop\New Formula\New Formula\bin\Debug\New Formula.exe.config
+C:\Users\C\Desktop\New Formula\New Formula\bin\Debug\New Formula.exe
+C:\Users\C\Desktop\New Formula\New Formula\bin\Debug\New Formula.pdb
 C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New Formula.csprojResolveAssemblyReference.cache
 C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New_Formula.Form1.resources
 C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New_Formula.Properties.Resources.resources
 C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New Formula.csproj.GenerateResource.Cache
-C:\Users\C\Desktop\New Formula\New Formula\bin\Debug\New Formula.exe
-C:\Users\C\Desktop\New Formula\New Formula\bin\Debug\New Formula.pdb
 C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New Formula.exe
 C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New Formula.pdb

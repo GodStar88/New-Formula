@@ -1,8 +1,0 @@
-C:\Users\C\Desktop\New Formula\New Formula\bin\Release\New Formula.exe.config
-C:\Users\C\Desktop\New Formula\New Formula\bin\Release\New Formula.exe
-C:\Users\C\Desktop\New Formula\New Formula\bin\Release\New Formula.pdb
-C:\Users\C\Desktop\New Formula\New Formula\obj\Release\New_Formula.Form1.resources
-C:\Users\C\Desktop\New Formula\New Formula\obj\Release\New_Formula.Properties.Resources.resources
-C:\Users\C\Desktop\New Formula\New Formula\obj\Release\New Formula.csproj.GenerateResource.Cache
-C:\Users\C\Desktop\New Formula\New Formula\obj\Release\New Formula.exe
-C:\Users\C\Desktop\New Formula\New Formula\obj\Release\New Formula.pdb
