@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -131,8 +132,7 @@ namespace New_Formula
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
-            clearFormula();
+        {           
             string time1 = Time1_Text.Text;
             string time2 = Time2_Text.Text;
             string date = Date_Text.Text;
@@ -149,13 +149,13 @@ namespace New_Formula
             sameCount = 0;
         }
 
-        private void step1(string time1, string time2, string date)
+        private string step1(string time1, string time2, string date)
         {
             // STEP1) If we use 9
             // Then 9 + 12 = 21 next nearest 9 same is 27, so 27 - 21 = 6
             // Then 9 + 16 = 25 next nearest 9 same is 27, so 27 - 25 = 2
             // So here we have 6 + 2 = 8
-
+            clearFormula();
             int h1 = int.Parse(time1.Split(':')[0]);
             int m1 = int.Parse(time1.Split(':')[1]);
             int h2 = int.Parse(time2.Split(':')[0]);
@@ -358,7 +358,7 @@ namespace New_Formula
                 count += breakdown_Same(newStep3[i], totalCount + step1count);
             }
             message += messageAdd(newStep3) + " compare  with breakdown " + (totalCount + step1count).ToString() + " same is " + count.ToString() + Environment.NewLine;
-
+            List<int> newStep6 = new List<int>();
             totalCount += count;
             message += "STEP5) All smae count " + totalCount.ToString() + " same is ";
             count = 0;
@@ -368,9 +368,10 @@ namespace New_Formula
             }
             message += messageAdd(newStep3) + " compare  with breakdown " + (totalCount + step1count).ToString() + " same is " + count.ToString() + Environment.NewLine;
             totalCount += count;
-
+            newStep6.Add(totalCount + step1count);
+            newStep6.Add(count);
             message += "STEP6) " + totalCount.ToString();
-
+            newStep6.Add(totalCount);
             if (count % 2 == 0)
             {
                 message += " no opposite";
@@ -382,41 +383,26 @@ namespace New_Formula
                 else result = "down";
             }
             message += Environment.NewLine;
-            int totalCount1 = 0;
             count = 0;
-            message += "STEP7) we have " + m1.ToString() + ", " + m2.ToString() + ", " + (m1 + m2).ToString() + " same is ";
-            count += breakdown_Same(m1, 9);
-            count += breakdown_Same(m2, 9);
-            count += breakdown_Same(m1 + m2, 9);
-            message += count.ToString() + Environment.NewLine;
-            totalCount1 = count;
-            message += "STEP8) " + totalCount.ToString() + ", " + m2.ToString() + " same is ";
-            count = breakdown_Same(totalCount, m2);
-            message += count.ToString() + ". So total same is ";
-            totalCount1 += count;
-            message += totalCount1.ToString();
+            message += "Result is " + result;
+            return result;
+            //
+//             message += "Here use " + messageAdd(newStep6) + Environment.NewLine;
+//             message += "STEP7) Check " + messageAdd(newStep6) + " for 9 and exact same is ";
+//             for (int i = 0; i < newStep6.Count; i++)
+//             {
+//                 count += breakdown_Same(newStep6[i], 9);
+//             }
+//             for (int i = 0; i < newStep6.Count - 1; i++)
+//             {
+//                 for (int j = i + 1; j < newStep6.Count; j++)
+//                 {
+//                     count += exactSame(newStep6[i], newStep6[j]);
+//                 }
+//             }
+//             message += count.ToString();
+            
 
-            message += ", " + (totalCount + totalCount1).ToString() + " is exact same in " + m2.ToString() + " So same is ";
-
-            count = 0;
-            for (int i = 0; i < breakdown[m2].Length; i++)
-            {
-                count += exactSame(totalCount + totalCount1, breakdown[m2][i]);
-            }
-            message += count.ToString() + Environment.NewLine;
-            totalCount1 += count;
-            message += totalCount1.ToString() + " is ";
-            if (totalCount1 % 2 == 0)
-            {
-                message += " no opposite";
-            }
-            else
-            {
-                message += " opposite";
-                if (result == "down") result = "up";
-                else result = "down";
-            }
-            message += "    Result is " + result;
         }
         private int breakdown_Same(int d, int t)
         {
@@ -648,6 +634,95 @@ namespace New_Formula
                 else return 0;
             }
             else return 0;
+        }
+
+
+        Microsoft.Office.Interop.Excel.Workbook MyBook = null;
+        Microsoft.Office.Interop.Excel.Application MyApp = null;
+        Microsoft.Office.Interop.Excel.Worksheet MySheet = null;
+        ThreadStart excelThread;
+        Thread excelThread_Thread;
+        string path = "";
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ExcelDialog = new OpenFileDialog();
+
+            ExcelDialog.InitialDirectory = "c:\\";
+            ExcelDialog.Title = "Select your team excel";
+            ExcelDialog.Filter = "xlsx files (*.xlsx)|*.xlsx";
+            ExcelDialog.FilterIndex = 2;
+            ExcelDialog.RestoreDirectory = true;
+
+            if (ExcelDialog.ShowDialog() == DialogResult.OK)
+            {
+                path = ExcelDialog.FileName;
+                button3.Enabled = true;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            excelThread = new ThreadStart(excelThreadStart);
+            excelThread_Thread = new Thread(excelThread);
+            excelThread_Thread.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void excelThreadStart()
+        {
+            MyApp = new Microsoft.Office.Interop.Excel.Application();
+            MyApp.Visible = false;
+            MyBook = MyApp.Workbooks.Open(path);
+            MySheet = (Microsoft.Office.Interop.Excel.Worksheet)MyBook.Sheets[1]; // Explict cast is not required here
+            int lastRow = MySheet.Cells.SpecialCells(Microsoft.Office.Interop.Excel.XlCellType.xlCellTypeLastCell).Row;
+            int index = 2;
+            try
+            {
+                for (index = 1; index <= lastRow; index++)
+                {
+                    this.Text = index.ToString();
+                    this.Refresh();
+                    try
+                    {
+                        System.Array MyValues = (System.Array)MySheet.get_Range("A" + index.ToString(), "I" + index.ToString()).Cells.Value;
+
+                        string date = MyValues.GetValue(1, 1).ToString().Replace(".", "");
+                        string time1 = MyValues.GetValue(1, 2).ToString();
+                        MyValues = (System.Array)MySheet.get_Range("A" + (index+1).ToString(), "I" + (index + 1).ToString()).Cells.Value;
+                        string time2 = MyValues.GetValue(1, 2).ToString();
+                        try
+                        {
+                            Date_Text.Text = date;
+                            Time1_Text.Text = time1;
+                            Time2_Text.Text = time2;
+                        }
+                        catch (System.Exception)
+                        {                        	    
+                        }
+                        string str = step1(time1, time2, date);
+                        lastRow = MySheet.Cells.SpecialCells(Microsoft.Office.Interop.Excel.XlCellType.xlCellTypeLastCell).Row;
+                        MySheet.Cells[index, 7] = str;
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+            MyBook.Close(true);
+            MyApp.Quit();
+            MessageBox.Show("Done");
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try { MyBook.Close(true); } catch (Exception) { }
+            try { MyApp.Quit(); } catch (Exception) { }
+            try { excelThread_Thread.Abort(); } catch (Exception) { }
         }
     }
 }

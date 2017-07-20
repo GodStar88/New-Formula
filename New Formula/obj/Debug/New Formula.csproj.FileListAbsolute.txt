@@ -7,3 +7,12 @@ C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New_Formula.Properties.Reso
 C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New Formula.csproj.GenerateResource.Cache
 C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New Formula.exe
 C:\Users\C\Desktop\New Formula\New Formula\obj\Debug\New Formula.pdb
+E:\Work\VC\New Formula\New Formula\bin\Debug\New Formula.exe.config
+E:\Work\VC\New Formula\New Formula\obj\Debug\New Formula.exe
+E:\Work\VC\New Formula\New Formula\obj\Debug\New Formula.pdb
+E:\Work\VC\New Formula\New Formula\bin\Debug\New Formula.exe
+E:\Work\VC\New Formula\New Formula\bin\Debug\New Formula.pdb
+E:\Work\VC\New Formula\New Formula\obj\Debug\New Formula.csprojResolveAssemblyReference.cache
+E:\Work\VC\New Formula\New Formula\obj\Debug\New_Formula.Form1.resources
+E:\Work\VC\New Formula\New Formula\obj\Debug\New_Formula.Properties.Resources.resources
+E:\Work\VC\New Formula\New Formula\obj\Debug\New Formula.csproj.GenerateResource.Cache

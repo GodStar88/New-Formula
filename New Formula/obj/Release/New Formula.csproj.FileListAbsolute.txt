@@ -1,0 +1,9 @@
+E:\Work\VC\New Formula\New Formula\bin\Release\New Formula.exe.config
+E:\Work\VC\New Formula\New Formula\bin\Release\New Formula.exe
+E:\Work\VC\New Formula\New Formula\bin\Release\New Formula.pdb
+E:\Work\VC\New Formula\New Formula\obj\Release\New Formula.csprojResolveAssemblyReference.cache
+E:\Work\VC\New Formula\New Formula\obj\Release\New_Formula.Form1.resources
+E:\Work\VC\New Formula\New Formula\obj\Release\New_Formula.Properties.Resources.resources
+E:\Work\VC\New Formula\New Formula\obj\Release\New Formula.csproj.GenerateResource.Cache
+E:\Work\VC\New Formula\New Formula\obj\Release\New Formula.exe
+E:\Work\VC\New Formula\New Formula\obj\Release\New Formula.pdb

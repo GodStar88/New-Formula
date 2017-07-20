@@ -34,6 +34,8 @@
             this.Time2_Text = new System.Windows.Forms.TextBox();
             this.Time1_Text = new System.Windows.Forms.TextBox();
             this.Check_Text = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -56,7 +58,7 @@
             // 
             // log
             // 
-            this.log.Location = new System.Drawing.Point(29, 76);
+            this.log.Location = new System.Drawing.Point(29, 124);
             this.log.Multiline = true;
             this.log.Name = "log";
             this.log.Size = new System.Drawing.Size(488, 360);
@@ -68,7 +70,7 @@
             this.Time2_Text.Name = "Time2_Text";
             this.Time2_Text.Size = new System.Drawing.Size(72, 20);
             this.Time2_Text.TabIndex = 3;
-            this.Time2_Text.Text = "00:15";
+            this.Time2_Text.Text = "00:39";
             // 
             // Time1_Text
             // 
@@ -76,7 +78,7 @@
             this.Time1_Text.Name = "Time1_Text";
             this.Time1_Text.Size = new System.Drawing.Size(75, 20);
             this.Time1_Text.TabIndex = 4;
-            this.Time1_Text.Text = "00:14";
+            this.Time1_Text.Text = "00:38";
             // 
             // Check_Text
             // 
@@ -86,11 +88,34 @@
             this.Check_Text.TabIndex = 5;
             this.Check_Text.Text = "9";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(265, 78);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(114, 23);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "Open";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Enabled = false;
+            this.button3.Location = new System.Drawing.Point(403, 78);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(114, 23);
+            this.button3.TabIndex = 7;
+            this.button3.Text = "Start";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(544, 458);
+            this.ClientSize = new System.Drawing.Size(544, 496);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.Check_Text);
             this.Controls.Add(this.Time1_Text);
             this.Controls.Add(this.Time2_Text);
@@ -99,6 +124,7 @@
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "New Formula";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -112,6 +138,8 @@
         private System.Windows.Forms.TextBox Time2_Text;
         private System.Windows.Forms.TextBox Time1_Text;
         private System.Windows.Forms.TextBox Check_Text;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
     }
 }
 
