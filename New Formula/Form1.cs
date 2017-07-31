@@ -367,8 +367,9 @@ namespace New_Formula
                 count += breakdown_Same(newStep3[i], totalCount + step1count);
             }
             message += messageAdd(newStep3) + " compare  with breakdown " + (totalCount + step1count).ToString() + " same is " + count.ToString() + Environment.NewLine;
-            totalCount += count;
+            
             newStep6.Add(totalCount + step1count);
+            totalCount += count;
             newStep6.Add(count);
             message += "STEP6) " + totalCount.ToString();
             newStep6.Add(totalCount);
@@ -384,23 +385,289 @@ namespace New_Formula
             }
             message += Environment.NewLine;
             count = 0;
-            message += "Result is " + result;
-            return result;
-            //
-//             message += "Here use " + messageAdd(newStep6) + Environment.NewLine;
-//             message += "STEP7) Check " + messageAdd(newStep6) + " for 9 and exact same is ";
-//             for (int i = 0; i < newStep6.Count; i++)
+            message += "Result is " + result + Environment.NewLine;
+
+            // message = "";
+            ///////////////////////////// RULES THREE
+            totalCount = 0;
+            // Here we have 93 is one same for 9,;
+            List<int> step7List = more100(newStep6[0]);
+            for (int i = 0; i < step7List.Count; i++)
+            {
+                count += breakdown_Same(9, step7List[i]);
+            }
+            message += "SETP7) Here we have " + newStep6[0].ToString() + " is " + messageAdd(step7List) + " for 9 is  " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+            // then add 93+5=98 here check for exact 12=12=21 same
+            
+
+            List<int> step9List = more100(newStep6[0] + newStep6[1]);
+            //message += "SETP8) " + messageAdd(step9List) + " here check for exact same ";
+
+//             count = 0;
+//             for (int i = 0; i < 3; i++)
 //             {
-//                 count += breakdown_Same(newStep6[i], 9);
-//             }
-//             for (int i = 0; i < newStep6.Count - 1; i++)
-//             {
-//                 for (int j = i + 1; j < newStep6.Count; j++)
+//                 for (int j = 0; j < step9List.Count; j++)
 //                 {
-//                     count += exactSame(newStep6[i], newStep6[j]);
+//                     count += exactSame(step9List[j], newStep6[i]);
+//                 }
+//                 
+//             }
+//             List<int> timeList = new List<int>();
+//             timeList.Add(h1);
+//             timeList.Add(h2);
+//             timeList.Add(m1);
+//             timeList.Add(m1);
+//             timeList.Add(middle1);
+//             timeList.Add(middle2);
+//             for (int i = 0; i < timeList.Count; i++)
+//             {
+//                 for (int j = 0; j < step9List.Count; j++)
+//                 {
+//                     count += exactSame(step9List[j], timeList[i]);
 //                 }
 //             }
-//             message += count.ToString();
+//             message += count.ToString() + Environment.NewLine;
+//             totalCount += count;
+            // Here check 04:26=30 and 4+27=31 and 61 so two same with date 20170102 and date add 13,16,29
+
+            dataAdd1(date);
+            step9List.Add(m1 + h1);
+            step9List.Add(m2 + h2);
+            step9List.Add(m1 + h1 + m2 + h2);
+            count = 0;
+            for (int i = 0; i < DateList.Count; i++)
+            {
+                for (int j = 0; j < step9List.Count; j++)
+                {
+                    count += exactSame(DateList[i], step9List[j]);
+                }
+            }
+            message += "STEP8) Here check " + messageAdd(step9List) + " with " + messageAdd(DateList) + " is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            message += "So total is " + totalCount.ToString() ;
+
+            if (totalCount % 2 == 0)
+            {
+                message += " no opposite";
+                result = "down";
+            }
+            else
+            {
+                message += " opposite";
+                result = "up";
+            }
+            message += Environment.NewLine;
+            count = 0;
+            message += "Result is " + result + Environment.NewLine;
+
+            message += "---------------------------------------" + Environment.NewLine;
+
+            message += "STEP9) Here we have " + messageAdd(step7List) + ", " + messageAdd(step9List) + " is ";
+            count = 0;
+            sum = 0;
+            for (int i = 0; i < step7List.Count; i++)
+            {
+                count += lastSame(step7List[i]);
+                sum += step7List[i];
+            }
+            for (int i = 0; i < step9List.Count; i++)
+            {
+                count += lastSame(step9List[i]);
+                sum += step9List[i];
+            }
+            message += count.ToString() + Environment.NewLine;
+            totalCount += count;
+            List<int> step11List = new List<int>();
+            int xx = sum / 10 + sum % 10;
+            count = 0;
+            message += "STEP10) " + sum.ToString() + " = " + xx.ToString() + " exact same and breakdown same with " + messageAdd(step7List) + ", " + messageAdd(step9List) + " is ";
+            step11List.Add(xx);
+            for (int i = 0; i < step7List.Count; i++)
+            {
+                count += exactSame(xx, step7List[i]);
+                count += breakdown_Same(xx, step7List[i]);
+            }
+            for (int i = 0; i < step9List.Count; i++)
+            {
+                count += exactSame(xx, step9List[i]);
+                count += breakdown_Same(xx, step9List[i]);
+            }
+            message += count.ToString() + Environment.NewLine;
+
+            totalCount += count;
+            step11List.Add(totalCount);
+            message += "So total is " + totalCount.ToString() + Environment.NewLine;
+
+            message += "---------------------------------------" + Environment.NewLine;
+            int everymin = int.Parse(Check_Text.Text);
+            step11List.Add(everymin);
+            count = 0;
+            message += "STEP11) Check breakdown same "  + messageAdd(step11List) + " is ";
+            for (int i = 0; i < step11List.Count - 1; i++)
+            {
+                for (int j = i + 1; j < step11List.Count; j++)
+                {
+                    count += breakdown_Same(step11List[i], step11List[j]);
+                }                
+            }
+            message += count.ToString() + Environment.NewLine;
+            totalCount = count;
+
+            message += "STEP12) ";
+            List<int> step12List = new List<int>();
+
+            xx = step11List[0] + step11List[1];
+            step12List.AddRange(need01(xx));
+            if (step11List[0] % 10 == 0 || step11List[1] % 10 == 0)
+            {
+                int yy = xx;
+                if (step11List[0] % 10 == 0)
+                {
+                    yy++;
+                    step11List.AddRange(need01(step11List[0] + 1));
+                    step11List.AddRange(need01(2 * step11List[0] + 1));
+                }
+                if (step11List[1] % 10 == 0)
+                {
+                    yy++;
+                    step11List.AddRange(need01(step11List[1] + 1));
+                    step11List.AddRange(need01(2 * step11List[1] + 1));
+                } 
+                step12List.AddRange(need01(yy));
+                step12List.AddRange(need01(xx + yy));
+            }
+            step11List.Add(everymin);
+
+            count = 0;
+            message += "Check " + messageAdd(step12List) + " for 9  and exact same with  " + messageAdd(step11List);
+            for (int i = 0; i < step12List.Count; i++)
+            {
+                count += breakdown_Same(9, step12List[i]);
+                for (int j = 0; j < step11List.Count; j++)
+                {
+                    if (step12List[i] > 99) step12List[i] = step12List[i] / 10 + step12List[i] % 10;
+                    for (int k = 0; k < breakdown[step12List[i]].Length; k++)
+                    {
+                        for (int p = 0; p < breakdown[step11List[j]].Length; p++)
+                        {
+                            count += exactSame(breakdown[step12List[i]][k], breakdown[step11List[j]][p]);
+                        }
+                    }
+                }
+            }
+
+
+
+            message += " same is " +  count.ToString() + Environment.NewLine;
+            totalCount += count;
+            message += "So total is " + totalCount.ToString() + Environment.NewLine;
+
+
+            message += "-------------------------------" + Environment.NewLine;
+            List<int> step13List = new List<int>();
+            // step13List.Add(check);
+            step13List.AddRange(step12List);
+            step13List.Add(totalCount);
+            message += "Here we use " + check.ToString() + ", " +  messageAdd(step13List) + Environment.NewLine;
+            count = 0;
+            totalCount = 0;
+            for (int i = 0; i < step13List.Count; i++)
+            {
+                count += exactSame1(step13List[i], check);
+                count += breakdown_Same(step13List[i], check);
+            }
+            message += "STEP1) Check " + messageAdd(step13List) + " exact same and breakdown with " + check.ToString() + " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            count = 0;
+            for (int i = 0; i < step13List.Count; i++)
+            {
+                count += breakdown_Same(step13List[i], 9);
+            }
+            message += "STEP2) Check " + messageAdd(step13List) + "  with 9 same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            int step3Number = check + step13List[step13List.Count - 1];
+            count = 0;
+            var numberList = need01(step3Number);
+            for (int i = 0; i < step13List.Count; i++)
+            {
+                for (int j = 0; j < numberList.Count; j++)
+                {
+                    for (int k = 0; k < breakdown[step13List[i]].Length; k++)
+                    {
+                        count += breakdown_Same(breakdown[step13List[i]][k], numberList[j]);
+                    }
+                    
+                }                
+            }
+
+            message += "STEP3) " + messageAdd(numberList) + " Check for breakdown same with " + messageAdd(step13List) + " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+            int number = step13List[0] + step13List[step13List.Count - 1];
+            message += "Check " + step13List[0].ToString() + " + " + step13List[step13List.Count - 1].ToString() + " = " + number.ToString() + " same is ";
+            if (number > 99) number = number / 10 + number % 10;
+            for (int i = 0; i < breakdown[number].Length; i++)
+            {
+                for (int j = 0; j < breakdown[step13List[0]].Length; j++)
+                {
+                    count += exactSame(breakdown[number][i], breakdown[step13List[0]][j]);
+                }
+            }
+            for (int i = 0; i < breakdown[number].Length; i++)
+            {
+                for (int j = 0; j < breakdown[step13List[step13List.Count - 1]].Length; j++)
+                {
+                    count += exactSame(breakdown[number][i], breakdown[step13List[step13List.Count - 1]][j]);
+                }
+            }
+            message += count.ToString() + Environment.NewLine;
+            totalCount += count;
+            if (check + step13List[step13List.Count - 1] > 0)
+            {
+                step3Number = check - step13List[step13List.Count - 1];
+                count = 0;
+                numberList = need01(step3Number);
+                for (int i = 0; i < step13List.Count; i++)
+                {
+                    for (int j = 0; j < numberList.Count; j++)
+                    {
+                        for (int k = 0; k < breakdown[step13List[i]].Length; k++)
+                        {
+                            count += breakdown_Same(breakdown[step13List[i]][k], numberList[j]);
+                        }
+
+                    }
+                }
+                message += "STEP4) " + messageAdd(numberList) + " Check for breakdown same with " + messageAdd(step13List) + " same is " + count.ToString() + Environment.NewLine;
+                totalCount += count;
+            }
+
+            message += "So total is " + totalCount.ToString();
+
+            if (totalCount % 2 == 0)
+            {
+                message += " no opposite";
+            }
+            else
+            {
+                message += " opposite";
+                if (result == "up")
+                {
+                    result = "down";
+                }
+                else
+                {
+                    result = "up";
+                }
+            }
+            message += Environment.NewLine +  "Result is " + result;
+
+
+
+            return result;
             
 
         }
@@ -426,7 +693,7 @@ namespace New_Formula
             }
             int count = 0;
             //12,21,24,42,36,63,19,91
-            if (t > 9 && d > 9)
+            if (t > 0 && d > 0)
             {
                 if (d == 24 || d == 42)
                 {
@@ -495,6 +762,132 @@ namespace New_Formula
             return count;
         }
 
+        public int lastSame(int number)
+        {
+            switch (number)
+            {
+                case 101: return 1;
+                case 37: return 1;
+                case 75: return 2;
+                case 94: return 2;
+                case 60: return 1;
+                case 10: return 1;
+                case 77: return 2;
+                case 83: return 1;
+                case 46: return 2;
+                case 65: return 1;
+                case 55: return 2;
+                case 59: return 1;
+                case 7: return 1;
+                case 17: return 1;
+                case 47: return 1;
+                case 103: return 2;
+                case 113: return 2;
+                case 99: return 2;
+                case 107: return 2;
+                case 109: return 1;
+                case 45: return 1;
+                case 54: return 2;
+                case 69: return 2;
+                case 96: return 2;
+                case 85: return 2;
+                case 95: return 2;
+                case 71: return 2;
+                case 81: return 2;
+                case 66: return 1;
+                case 14: return 1;
+                case 64: return 2;
+                case 111: return 2;
+                case 5: return 1;
+                case 11: return 1;
+                case 21: return 2;
+                case 27: return 2;
+                case 31: return 1;
+                case 39: return 2;
+                case 41: return 2;
+                case 43: return 1;
+                case 49: return 2;
+                case 26: return 1;
+                case 28: return 1;
+                case 30: return 2;
+                case 20: return 1;
+                case 67: return 1;
+                case 34: return 1;
+                case 35: return 1;
+                case 40: return 1;
+                case 79: return 1;
+                case 42: return 1;
+                case 87: return 1;
+                case 91: return 2;
+                case 93: return 1;
+                case 48: return 2;
+                case 97: return 2;
+                case 74: return 1;
+                case 72: return 2;
+                case 53: return 1;
+                case 84: return 2;
+                case 82: return 1;
+                case 88: return 2;
+                case 117: return 1;
+                case 119: return 1;
+                case 56: return 2;
+                case 18: return 1;
+                case 19: return 1;
+                case 9: return 2;
+                case 25: return 1;
+                case 33: return 1;
+                case 92: return 2;
+                case 57: return 1;
+                case 38: return 2;
+                case 16: return 1;
+                case 61: return 2;
+                case 89: return 1;
+                case 15: return 1;
+                case 51: return 1;
+                case 52: return 1;
+                case 62: return 1;
+                case 58: return 2;
+                case 115: return 1;
+                case 121: return 1;
+                case 4: return 1;
+                case 8: return 1;
+                default: return 0;
+            }
+        }
+        public List<int> more100(int number)
+        {
+            List<int> list = new List<int>();
+            if (number < 100)
+            {
+                list.Add(number);
+            }
+            else
+            {
+                int x = number / 10 + number % 10;
+                list.Add(x);
+                if (number / 10 % 10 == 0 || number % 10 == 0)
+                {
+                    int y = x;
+                    if (number / 10 % 10 == 0) y++;
+                    if (number % 10 == 0) y++;
+                    list.Add(y);
+                    list.Add(x + y);
+                }
+            }
+            return list;
+        }
+
+        public List<int> need01(int number)
+        {
+            List<int> list = new List<int>();
+            list.Add(number);
+            if (number % 10 == 0)
+            {
+                list.Add(number + 1);
+                list.Add(2 * number + 1);
+            }
+            return list;
+        }
         public int addCount(int d, int t)
         {
             //11,22,33,44 is 5 same
@@ -576,6 +969,27 @@ namespace New_Formula
 
         private void dateAdd(string date)
         {
+            //             char[] myArray = date.ToCharArray();
+            // 
+            //             List<int> dateArray = new List<int>();
+            //             for (int i = 0; i < 3; i++)
+            //             {
+            //                 int x = Int32.Parse(myArray[i].ToString() + myArray[i + 1].ToString());
+            //                 if (x > 10)
+            //                 {
+            //                     dateArray.Add(x);
+            //                 }
+            //             }
+            //             if (myArray[1].ToString() == "0" && myArray[2].ToString() != "0")
+            //                 dateArray.Add(Int32.Parse(myArray[0].ToString() + myArray[2].ToString()));
+            //             if (myArray[1].ToString() == "0" && myArray[2].ToString() == "0")
+            //                 dateArray.Add(Int32.Parse(myArray[0].ToString() + myArray[3].ToString()));
+            //             dateArray.Add(Int32.Parse(myArray[4].ToString() + myArray[5].ToString()));
+            //             dateArray.Add(Int32.Parse(myArray[6].ToString() + myArray[7].ToString()));
+            //             for (int i = 0; i < dateArray.Count; i++)
+            //             {
+            //                 DateList.Add(dateArray[i]);
+            //             }
             char[] myArray = date.ToCharArray();
 
             List<int> dateArray = new List<int>();
@@ -591,12 +1005,37 @@ namespace New_Formula
                 dateArray.Add(Int32.Parse(myArray[0].ToString() + myArray[2].ToString()));
             if (myArray[1].ToString() == "0" && myArray[2].ToString() == "0")
                 dateArray.Add(Int32.Parse(myArray[0].ToString() + myArray[3].ToString()));
+            dateArray.Add(Int32.Parse(myArray[3].ToString() + myArray[4].ToString()));
             dateArray.Add(Int32.Parse(myArray[4].ToString() + myArray[5].ToString()));
+            if (myArray[4].ToString() == "0")
+                dateArray.Add(Int32.Parse(myArray[3].ToString() + myArray[5].ToString()));
+            dateArray.Add(Int32.Parse(myArray[5].ToString() + myArray[6].ToString()));
             dateArray.Add(Int32.Parse(myArray[6].ToString() + myArray[7].ToString()));
+            if (myArray[6].ToString() == "0")
+                dateArray.Add(Int32.Parse(myArray[5].ToString() + myArray[7].ToString()));
+
             for (int i = 0; i < dateArray.Count; i++)
             {
                 DateList.Add(dateArray[i]);
             }
+        }
+
+        private void dataAdd1(string date)
+        {
+            char[] myArray = date.ToCharArray();
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < myArray.Length; i++)
+            {
+                int num = int.Parse(myArray[i].ToString());
+
+                x += num;
+                if (num == 0) y++;
+                else y += num;
+            }
+            DateList.Add(x);
+            DateList.Add(y);
+            DateList.Add(x + y);
         }
 
         private string messageAdd(List<int> list)
@@ -636,6 +1075,14 @@ namespace New_Formula
             else return 0;
         }
 
+        public int exactSame1(int a, int b)
+        {
+
+            if (a == b) return 1;
+            else if (a / 10 + a % 10 * 10 == b) return 1;
+            else return 0;
+        }
+
 
         Microsoft.Office.Interop.Excel.Workbook MyBook = null;
         Microsoft.Office.Interop.Excel.Application MyApp = null;
@@ -672,6 +1119,8 @@ namespace New_Formula
         /// </summary>
         private void excelThreadStart()
         {
+            int m = int.Parse(Check_Text.Text);
+            int c = int.Parse(column.Text);
             MyApp = new Microsoft.Office.Interop.Excel.Application();
             MyApp.Visible = false;
             MyBook = MyApp.Workbooks.Open(path);
@@ -680,7 +1129,7 @@ namespace New_Formula
             int index = 2;
             try
             {
-                for (index = 1; index <= lastRow; index++)
+                for (index = m; index <= lastRow; index = index + m)
                 {
                     this.Text = index.ToString();
                     this.Refresh();
@@ -690,8 +1139,10 @@ namespace New_Formula
 
                         string date = MyValues.GetValue(1, 1).ToString().Replace(".", "");
                         string time1 = MyValues.GetValue(1, 2).ToString();
-                        MyValues = (System.Array)MySheet.get_Range("A" + (index+1).ToString(), "I" + (index + 1).ToString()).Cells.Value;
+                        string realdata1 = MyValues.GetValue(1, 3).ToString();
+                        MyValues = (System.Array)MySheet.get_Range("A" + (index+5).ToString(), "I" + (index + m).ToString()).Cells.Value;
                         string time2 = MyValues.GetValue(1, 2).ToString();
+                        string realdata2 = MyValues.GetValue(1, 3).ToString();
                         try
                         {
                             Date_Text.Text = date;
@@ -703,7 +1154,10 @@ namespace New_Formula
                         }
                         string str = step1(time1, time2, date);
                         lastRow = MySheet.Cells.SpecialCells(Microsoft.Office.Interop.Excel.XlCellType.xlCellTypeLastCell).Row;
-                        MySheet.Cells[index, 7] = str;
+                        MySheet.Cells[index, c] = str;
+
+                        if ( double.Parse(realdata1) < double.Parse(realdata2)) MySheet.Cells[index, c+1] = "UP";
+                        else MySheet.Cells[index, c+1] = "DOWN";
                     }
                     catch (Exception)
                     {

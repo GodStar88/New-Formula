@@ -36,6 +36,8 @@
             this.Check_Text = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.column = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -54,14 +56,14 @@
             this.Date_Text.Name = "Date_Text";
             this.Date_Text.Size = new System.Drawing.Size(106, 20);
             this.Date_Text.TabIndex = 1;
-            this.Date_Text.Text = "20170111";
+            this.Date_Text.Text = "20170102";
             // 
             // log
             // 
             this.log.Location = new System.Drawing.Point(29, 124);
             this.log.Multiline = true;
             this.log.Name = "log";
-            this.log.Size = new System.Drawing.Size(488, 360);
+            this.log.Size = new System.Drawing.Size(488, 549);
             this.log.TabIndex = 2;
             // 
             // Time2_Text
@@ -70,7 +72,7 @@
             this.Time2_Text.Name = "Time2_Text";
             this.Time2_Text.Size = new System.Drawing.Size(72, 20);
             this.Time2_Text.TabIndex = 3;
-            this.Time2_Text.Text = "00:39";
+            this.Time2_Text.Text = "11:19";
             // 
             // Time1_Text
             // 
@@ -78,7 +80,7 @@
             this.Time1_Text.Name = "Time1_Text";
             this.Time1_Text.Size = new System.Drawing.Size(75, 20);
             this.Time1_Text.TabIndex = 4;
-            this.Time1_Text.Text = "00:38";
+            this.Time1_Text.Text = "11:17";
             // 
             // Check_Text
             // 
@@ -86,7 +88,7 @@
             this.Check_Text.Name = "Check_Text";
             this.Check_Text.Size = new System.Drawing.Size(20, 20);
             this.Check_Text.TabIndex = 5;
-            this.Check_Text.Text = "9";
+            this.Check_Text.Text = "21";
             // 
             // button2
             // 
@@ -109,11 +111,30 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // column
+            // 
+            this.column.Location = new System.Drawing.Point(192, 80);
+            this.column.Name = "column";
+            this.column.Size = new System.Drawing.Size(38, 20);
+            this.column.TabIndex = 11;
+            this.column.Text = "8";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(144, 83);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(41, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "column";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(544, 496);
+            this.ClientSize = new System.Drawing.Size(544, 685);
+            this.Controls.Add(this.column);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.Check_Text);
@@ -140,6 +161,8 @@
         private System.Windows.Forms.TextBox Check_Text;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox column;
+        private System.Windows.Forms.Label label2;
     }
 }
 
