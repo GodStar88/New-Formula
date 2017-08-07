@@ -221,22 +221,22 @@ namespace New_Formula
             {
                 for (int j = 0; j < breakdown[h1+m1].Length; j++)
                 {
-                    count += exactSame(breakdown[h1 + m1][j], DateList[i]);
+                    count += exactSame(breakdown[h1 + m1][j], DateList[i], 1);
                 }
                 for (int j = 0; j < breakdown[h2+ m2].Length; j++)
                 {
-                    count += exactSame(breakdown[h2 + m2][j], DateList[i]);
+                    count += exactSame(breakdown[h2 + m2][j], DateList[i], 1);
                 }
             }
             for (int i = 0; i < TimeList.Count; i++)
             {
                 for (int j = 0; j < breakdown[h1 + m1].Length; j++)
                 {
-                    count += exactSame(breakdown[h1 + m1][j], TimeList[i]);
+                    count += exactSame(breakdown[h1 + m1][j], TimeList[i], 1);
                 }
                 for (int j = 0; j < breakdown[h2 + m2].Length; j++)
                 {
-                    count += exactSame(breakdown[h2 + m2][j], TimeList[i]);
+                    count += exactSame(breakdown[h2 + m2][j], TimeList[i], 1);
                 }
             }
             message += count.ToString() + Environment.NewLine;
@@ -294,12 +294,8 @@ namespace New_Formula
             {
                 for (int j = 0; j < DateList.Count; j++)
                 {
-                    count += exactSame(stepList4[i], DateList[j]);
+                    count += exactSame(stepList4[i], DateList[j], 1);
                 }
-//                 for (int j = 0; j < TimeList.Count; j++)
-//                 {
-//                     count += exactSame(stepList4[i], TimeList[j]);
-//                 }
             }
             message += count.ToString();
 
@@ -387,265 +383,55 @@ namespace New_Formula
             count = 0;
             message += "Result is " + result + Environment.NewLine;
 
-            // message = "";
-            ///////////////////////////// RULES THREE
+            message += "======================================" + Environment.NewLine;
+            List<int> lastStep1 = new List<int>();
+            lastStep1.Add(newStep1[0]);
+            lastStep1.Add(newStep1[4]);
+            lastStep1.Add(totalCount);
             totalCount = 0;
-            // Here we have 93 is one same for 9,;
-            List<int> step7List = more100(newStep6[0]);
-            for (int i = 0; i < step7List.Count; i++)
+            count = 0;
+            message += "We use " + messageAdd(lastStep1) + Environment.NewLine;
+            for (int i = 0; i < lastStep1.Count; i++)
             {
-                count += breakdown_Same(9, step7List[i]);
+                count += breakdown_Same(9, lastStep1[i]);
+                count += breakdown_Same(2, lastStep1[i]);
             }
-            message += "SETP7) Here we have " + newStep6[0].ToString() + " is " + messageAdd(step7List) + " for 9 is  " + count.ToString() + Environment.NewLine;
             totalCount += count;
-            // then add 93+5=98 here check for exact 12=12=21 same
-            
-
-            List<int> step9List = more100(newStep6[0] + newStep6[1]);
-            //message += "SETP8) " + messageAdd(step9List) + " here check for exact same ";
-
-//             count = 0;
-//             for (int i = 0; i < 3; i++)
-//             {
-//                 for (int j = 0; j < step9List.Count; j++)
-//                 {
-//                     count += exactSame(step9List[j], newStep6[i]);
-//                 }
-//                 
-//             }
-//             List<int> timeList = new List<int>();
-//             timeList.Add(h1);
-//             timeList.Add(h2);
-//             timeList.Add(m1);
-//             timeList.Add(m1);
-//             timeList.Add(middle1);
-//             timeList.Add(middle2);
-//             for (int i = 0; i < timeList.Count; i++)
-//             {
-//                 for (int j = 0; j < step9List.Count; j++)
-//                 {
-//                     count += exactSame(step9List[j], timeList[i]);
-//                 }
-//             }
-//             message += count.ToString() + Environment.NewLine;
-//             totalCount += count;
-            // Here check 04:26=30 and 4+27=31 and 61 so two same with date 20170102 and date add 13,16,29
-
-            dataAdd1(date);
-            step9List.Add(m1 + h1);
-            step9List.Add(m2 + h2);
-            step9List.Add(m1 + h1 + m2 + h2);
+            message += "STEP1) Check "  + messageAdd(lastStep1) + " for 9 and 2 same is " + count.ToString() + Environment.NewLine;
             count = 0;
-            for (int i = 0; i < DateList.Count; i++)
+
+            for (int i = 0; i < lastStep1.Count - 1; i++)
             {
-                for (int j = 0; j < step9List.Count; j++)
+                for (int j = i + 1; j < lastStep1.Count; j++)
                 {
-                    count += exactSame(DateList[i], step9List[j]);
-                }
-            }
-            message += "STEP8) Here check " + messageAdd(step9List) + " with " + messageAdd(DateList) + " is " + count.ToString() + Environment.NewLine;
-            totalCount += count;
-
-            message += "So total is " + totalCount.ToString() ;
-
-            if (totalCount % 2 == 0)
-            {
-                message += " no opposite";
-                result = "down";
-            }
-            else
-            {
-                message += " opposite";
-                result = "up";
-            }
-            message += Environment.NewLine;
-            count = 0;
-            message += "Result is " + result + Environment.NewLine;
-
-            message += "---------------------------------------" + Environment.NewLine;
-
-            message += "STEP9) Here we have " + messageAdd(step7List) + ", " + messageAdd(step9List) + " is ";
-            count = 0;
-            sum = 0;
-            for (int i = 0; i < step7List.Count; i++)
-            {
-                count += lastSame(step7List[i]);
-                sum += step7List[i];
-            }
-            for (int i = 0; i < step9List.Count; i++)
-            {
-                count += lastSame(step9List[i]);
-                sum += step9List[i];
-            }
-            message += count.ToString() + Environment.NewLine;
-            totalCount += count;
-            List<int> step11List = new List<int>();
-            int xx = sum / 10 + sum % 10;
-            count = 0;
-            message += "STEP10) " + sum.ToString() + " = " + xx.ToString() + " exact same and breakdown same with " + messageAdd(step7List) + ", " + messageAdd(step9List) + " is ";
-            step11List.Add(xx);
-            for (int i = 0; i < step7List.Count; i++)
-            {
-                count += exactSame(xx, step7List[i]);
-                count += breakdown_Same(xx, step7List[i]);
-            }
-            for (int i = 0; i < step9List.Count; i++)
-            {
-                count += exactSame(xx, step9List[i]);
-                count += breakdown_Same(xx, step9List[i]);
-            }
-            message += count.ToString() + Environment.NewLine;
-
-            totalCount += count;
-            step11List.Add(totalCount);
-            message += "So total is " + totalCount.ToString() + Environment.NewLine;
-
-            message += "---------------------------------------" + Environment.NewLine;
-            int everymin = int.Parse(Check_Text.Text);
-            step11List.Add(everymin);
-            count = 0;
-            message += "STEP11) Check breakdown same "  + messageAdd(step11List) + " is ";
-            for (int i = 0; i < step11List.Count - 1; i++)
-            {
-                for (int j = i + 1; j < step11List.Count; j++)
-                {
-                    count += breakdown_Same(step11List[i], step11List[j]);
-                }                
-            }
-            message += count.ToString() + Environment.NewLine;
-            totalCount = count;
-
-            message += "STEP12) ";
-            List<int> step12List = new List<int>();
-
-            xx = step11List[0] + step11List[1];
-            step12List.AddRange(need01(xx));
-            if (step11List[0] % 10 == 0 || step11List[1] % 10 == 0)
-            {
-                int yy = xx;
-                if (step11List[0] % 10 == 0)
-                {
-                    yy++;
-                    step11List.AddRange(need01(step11List[0] + 1));
-                    step11List.AddRange(need01(2 * step11List[0] + 1));
-                }
-                if (step11List[1] % 10 == 0)
-                {
-                    yy++;
-                    step11List.AddRange(need01(step11List[1] + 1));
-                    step11List.AddRange(need01(2 * step11List[1] + 1));
-                } 
-                step12List.AddRange(need01(yy));
-                step12List.AddRange(need01(xx + yy));
-            }
-            step11List.Add(everymin);
-
-            count = 0;
-            message += "Check " + messageAdd(step12List) + " for 9  and exact same with  " + messageAdd(step11List);
-            for (int i = 0; i < step12List.Count; i++)
-            {
-                count += breakdown_Same(9, step12List[i]);
-                for (int j = 0; j < step11List.Count; j++)
-                {
-                    if (step12List[i] > 99) step12List[i] = step12List[i] / 10 + step12List[i] % 10;
-                    for (int k = 0; k < breakdown[step12List[i]].Length; k++)
-                    {
-                        for (int p = 0; p < breakdown[step11List[j]].Length; p++)
-                        {
-                            count += exactSame(breakdown[step12List[i]][k], breakdown[step11List[j]][p]);
-                        }
-                    }
+                    count += lastStepBreakdown(lastStep1[i], lastStep1[j]);
                 }
             }
 
+            message += "             Check exact same 12=12 with " + messageAdd(lastStep1) + " include breakdown same is " + count.ToString() + Environment.NewLine;
 
 
-            message += " same is " +  count.ToString() + Environment.NewLine;
+
+            int number = Math.Abs(lastStep1[1] + lastStep1[0] + lastStep1[2]);
+            count = breakdown_Same(number, 9);
+            message += "             Check " + number.ToString() + " for 9 same is " + count.ToString() + Environment.NewLine;
             totalCount += count;
-            message += "So total is " + totalCount.ToString() + Environment.NewLine;
+            message += "STEP2) " + number.ToString();
+            totalCount += lastSteps(number, lastStep1);
 
+            number = Math.Abs(lastStep1[1] - lastStep1[0] - lastStep1[2]);
+            message += "STEP3) " + number.ToString();
+            totalCount += lastSteps(number, lastStep1);
 
-            message += "-------------------------------" + Environment.NewLine;
-            List<int> step13List = new List<int>();
-            // step13List.Add(check);
-            step13List.AddRange(step12List);
-            step13List.Add(totalCount);
-            message += "Here we use " + check.ToString() + ", " +  messageAdd(step13List) + Environment.NewLine;
-            count = 0;
-            totalCount = 0;
-            for (int i = 0; i < step13List.Count; i++)
-            {
-                count += exactSame1(step13List[i], check);
-                count += breakdown_Same(step13List[i], check);
-            }
-            message += "STEP1) Check " + messageAdd(step13List) + " exact same and breakdown with " + check.ToString() + " same is " + count.ToString() + Environment.NewLine;
-            totalCount += count;
+            number = Math.Abs(lastStep1[0] - lastStep1[1] - lastStep1[2]);
+            message += "STEP4) " + number.ToString();
+            totalCount += lastSteps(number, lastStep1);
 
-            count = 0;
-            for (int i = 0; i < step13List.Count; i++)
-            {
-                count += breakdown_Same(step13List[i], 9);
-            }
-            message += "STEP2) Check " + messageAdd(step13List) + "  with 9 same is " + count.ToString() + Environment.NewLine;
-            totalCount += count;
+            number = Math.Abs(lastStep1[0] - lastStep1[1] - lastStep1[2]);
+            message += "STEP5) " + number.ToString();
+            totalCount += lastSteps(number, lastStep1);
 
-            int step3Number = check + step13List[step13List.Count - 1];
-            count = 0;
-            var numberList = need01(step3Number);
-            for (int i = 0; i < step13List.Count; i++)
-            {
-                for (int j = 0; j < numberList.Count; j++)
-                {
-                    for (int k = 0; k < breakdown[step13List[i]].Length; k++)
-                    {
-                        count += breakdown_Same(breakdown[step13List[i]][k], numberList[j]);
-                    }
-                    
-                }                
-            }
-
-            message += "STEP3) " + messageAdd(numberList) + " Check for breakdown same with " + messageAdd(step13List) + " same is " + count.ToString() + Environment.NewLine;
-            totalCount += count;
-            int number = step13List[0] + step13List[step13List.Count - 1];
-            message += "Check " + step13List[0].ToString() + " + " + step13List[step13List.Count - 1].ToString() + " = " + number.ToString() + " same is ";
-            if (number > 99) number = number / 10 + number % 10;
-            for (int i = 0; i < breakdown[number].Length; i++)
-            {
-                for (int j = 0; j < breakdown[step13List[0]].Length; j++)
-                {
-                    count += exactSame(breakdown[number][i], breakdown[step13List[0]][j]);
-                }
-            }
-            for (int i = 0; i < breakdown[number].Length; i++)
-            {
-                for (int j = 0; j < breakdown[step13List[step13List.Count - 1]].Length; j++)
-                {
-                    count += exactSame(breakdown[number][i], breakdown[step13List[step13List.Count - 1]][j]);
-                }
-            }
-            message += count.ToString() + Environment.NewLine;
-            totalCount += count;
-            if (check + step13List[step13List.Count - 1] > 0)
-            {
-                step3Number = check - step13List[step13List.Count - 1];
-                count = 0;
-                numberList = need01(step3Number);
-                for (int i = 0; i < step13List.Count; i++)
-                {
-                    for (int j = 0; j < numberList.Count; j++)
-                    {
-                        for (int k = 0; k < breakdown[step13List[i]].Length; k++)
-                        {
-                            count += breakdown_Same(breakdown[step13List[i]][k], numberList[j]);
-                        }
-
-                    }
-                }
-                message += "STEP4) " + messageAdd(numberList) + " Check for breakdown same with " + messageAdd(step13List) + " same is " + count.ToString() + Environment.NewLine;
-                totalCount += count;
-            }
-
-            message += "So total is " + totalCount.ToString();
+            message += "Total is " + totalCount.ToString();
 
             if (totalCount % 2 == 0)
             {
@@ -670,6 +456,36 @@ namespace New_Formula
             return result;
             
 
+        }
+
+        private int lastStepBreakdown(int a, int b)
+        {
+            int count = 0;
+            if (a > 99) a = a / 10 + a % 10;
+            if (b > 99) a = b / 10 + b % 10;
+            for (int i = 0; i < breakdown[a].Length; i++)
+            {
+                for (int j = 0; j < breakdown[b].Length; j++)
+                {
+                    count += exactSame(breakdown[a][i], breakdown[b][j], 3);
+                }
+            }
+            return count;
+        }
+
+        private int lastSteps(int x, List<int> list)
+        {
+            int count = 0;
+
+            count += breakdown_Same(2, x);
+            count += breakdown_Same(9, x);
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                count += lastStepBreakdown(x, list[i]);
+            }
+            message += " and check for 2 and 9 and exactsame with " + messageAdd(list) + " include breakdown same is " + count.ToString() + Environment.NewLine;
+            return count;
         }
         private int breakdown_Same(int d, int t)
         {
@@ -1064,23 +880,31 @@ namespace New_Formula
             return 0;
         }
 
-        public int exactSame(int a, int b)
+        public int exactSame(int a, int b, int type)
         {
-            if (a > 9 && b > 9)
+            switch (type)
             {
-                if (a == b) return 1;
-                else if (a / 10 + a % 10 * 10 == b) return 1;
-                else return 0;
+                case 1:
+                    if (a > 9 && b > 9)
+                    {
+                        if (a == b) return 1;
+                        else if (a / 10 + a % 10 * 10 == b) return 1;
+                        else return 0;
+                    }
+                    else return 0;
+                case 2:
+                    if (a == b) return 1;
+                    else if (a / 10 + a % 10 * 10 == b) return 1;
+                    else return 0;
+                case 3:
+                    if (a > 9 && b > 9)
+                    {
+                        if (a == b) return 1;
+                        else return 0;
+                    }
+                    else return 0;
+                default: return 0;
             }
-            else return 0;
-        }
-
-        public int exactSame1(int a, int b)
-        {
-
-            if (a == b) return 1;
-            else if (a / 10 + a % 10 * 10 == b) return 1;
-            else return 0;
         }
 
 
