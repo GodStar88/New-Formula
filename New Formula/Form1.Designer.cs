@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.Date_Text = new System.Windows.Forms.TextBox();
             this.log = new System.Windows.Forms.TextBox();
@@ -56,7 +57,7 @@
             this.Date_Text.Name = "Date_Text";
             this.Date_Text.Size = new System.Drawing.Size(106, 20);
             this.Date_Text.TabIndex = 1;
-            this.Date_Text.Text = "20170102";
+            this.Date_Text.Text = "20010111";
             // 
             // log
             // 
@@ -72,7 +73,7 @@
             this.Time2_Text.Name = "Time2_Text";
             this.Time2_Text.Size = new System.Drawing.Size(72, 20);
             this.Time2_Text.TabIndex = 3;
-            this.Time2_Text.Text = "11:19";
+            this.Time2_Text.Text = "11:00";
             // 
             // Time1_Text
             // 
@@ -80,7 +81,7 @@
             this.Time1_Text.Name = "Time1_Text";
             this.Time1_Text.Size = new System.Drawing.Size(75, 20);
             this.Time1_Text.TabIndex = 4;
-            this.Time1_Text.Text = "11:17";
+            this.Time1_Text.Text = "10:00";
             // 
             // Check_Text
             // 
@@ -143,6 +144,7 @@
             this.Controls.Add(this.log);
             this.Controls.Add(this.Date_Text);
             this.Controls.Add(this.button1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "New Formula";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);

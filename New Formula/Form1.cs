@@ -382,7 +382,7 @@ namespace New_Formula
             message += Environment.NewLine;
             count = 0;
             message += "Result is " + result + Environment.NewLine;
-
+            message = "";
             message += "======================================" + Environment.NewLine;
             List<int> lastStep1 = new List<int>();
             lastStep1.Add(newStep1[0]);
@@ -409,29 +409,132 @@ namespace New_Formula
             }
 
             message += "             Check exact same 12=12 with " + messageAdd(lastStep1) + " include breakdown same is " + count.ToString() + Environment.NewLine;
-
+            int partOne = count;
 
 
             int number = Math.Abs(lastStep1[1] + lastStep1[0] + lastStep1[2]);
             count = breakdown_Same(number, 9);
             message += "             Check " + number.ToString() + " for 9 same is " + count.ToString() + Environment.NewLine;
             totalCount += count;
-            message += "STEP2) " + number.ToString();
-            totalCount += lastSteps(number, lastStep1);
 
-            number = Math.Abs(lastStep1[1] - lastStep1[0] - lastStep1[2]);
-            message += "STEP3) " + number.ToString();
-            totalCount += lastSteps(number, lastStep1);
+            // last step part one
+            message += "====================PART ONE==================" + Environment.NewLine;
+            totalCount = 0;
+            count = 0;
+            var temp = more100(number);
+            int stepNumber1 = number;
+            if (temp.Count == 3) stepNumber1 = temp[2];
+            else stepNumber1 = temp[0];
+            count = breakdown_Same(stepNumber1, 9);
+            message += "STEP1) Check " + stepNumber1.ToString() + " for 9 same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
 
-            number = Math.Abs(lastStep1[0] - lastStep1[1] - lastStep1[2]);
-            message += "STEP4) " + number.ToString();
-            totalCount += lastSteps(number, lastStep1);
+            count = 0;
+            var partOneList1 = addMore100(number, 9 + 5);
+            partOneList1.AddRange(addMore100(number, 1 + 9 + 5));
+            partOneList1.AddRange(addMore100(number, 2 + 9 + 5));
+            for (int i = 0; i < partOneList1.Count; i++)
+            {
+                count += breakdown_Same(partOneList1[i], 9);
+            }
+            message += "STEP2) Check " + messageAdd(partOneList1) + " for 9 same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
 
-            number = Math.Abs(lastStep1[0] - lastStep1[1] - lastStep1[2]);
-            message += "STEP5) " + number.ToString();
-            totalCount += lastSteps(number, lastStep1);
+            count = 0;
+            var partOneList2 = more100(number - 9 - 5);
+            partOneList2.AddRange(more100(number - 10 - 5));
+            partOneList2.AddRange(more100(number - 11 - 5));
+            for (int i = 0; i < partOneList2.Count; i++)
+            {
+                count += breakdown_Same(partOneList2[i], 9);
+            }
+            message += "STEP3) Check " + messageAdd(partOneList2) + " for 9 same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
 
-            message += "Total is " + totalCount.ToString();
+            count = 0;
+            for (int i = 0; i < partOneList1.Count; i++)
+            {
+                count += exactSame(partOneList1[i], 13, 1);
+                count += exactSame(partOneList1[i], 33, 1);
+            }
+            for (int i = 0; i < partOneList2.Count; i++)
+            {
+                count += exactSame(partOneList2[i], 13, 1);
+                count += exactSame(partOneList2[i], 33, 1);
+            }
+            message += "STEP4) Check 33,13 exactsame with " + messageAdd(partOneList1) + " and " + messageAdd(partOneList2) + " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            count = 0;
+            for (int i = 0; i < partOneList1.Count; i++)
+            {
+                for (int j = 0; j < partOneList2.Count; j++)
+                {
+                    count += exactSame(partOneList1[i], partOneList2[j], 1);
+                }
+            }
+            message += "STEP5) Check exactsame " + messageAdd(partOneList1) + " with " + messageAdd(partOneList2) + " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            message += "STEP6) Add all the same count is " + totalCount.ToString() + Environment.NewLine;
+
+            List<int> partThreeList = new List<int>();
+            partThreeList.Add(totalCount);
+
+            message += "====================PART TWO==================" + Environment.NewLine;
+
+            count = 0;
+            partOneList1.Clear();
+            partOneList2.Clear();
+            int partonetotal = totalCount;
+            totalCount = 0;
+            partOneList1 = addMore100(number, 9 + 5 + partonetotal);
+            partOneList1.AddRange(addMore100(number, 1 + 9 + 5 + partonetotal));
+            partOneList1.AddRange(addMore100(number, 2 + 9 + 5 + partonetotal));
+            for (int i = 0; i < partOneList1.Count; i++)
+            {
+                count += breakdown_Same(partOneList1[i], 9);
+            }
+            message += "STEP1) Check " + messageAdd(partOneList1) + " for 9 same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            count = 0;
+            partOneList2 = more100(number - 9 - 5);
+            partOneList2.AddRange(more100(number - 10 - 5 - partonetotal));
+            partOneList2.AddRange(more100(number - 11 - 5- partonetotal));
+            for (int i = 0; i < partOneList2.Count; i++)
+            {
+                count += breakdown_Same(partOneList2[i], 9);
+            }
+            message += "STEP2) Check " + messageAdd(partOneList2) + " for 9 same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            count = 0;
+            for (int i = 0; i < partOneList1.Count; i++)
+            {
+                count += exactSame(partOneList1[i], 13, 1);
+                count += exactSame(partOneList1[i], 33, 1);
+            }
+            for (int i = 0; i < partOneList2.Count; i++)
+            {
+                count += exactSame(partOneList2[i], 13, 1);
+                count += exactSame(partOneList2[i], 33, 1);
+            }
+            message += "STEP3) Check 33,13 exactsame with " + messageAdd(partOneList1) + " and " + messageAdd(partOneList2) + " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            count = 0;
+            for (int i = 0; i < partOneList1.Count; i++)
+            {
+                for (int j = 0; j < partOneList2.Count; j++)
+                {
+                    count += exactSame(partOneList1[i], partOneList2[j], 1);
+                }
+            }
+            message += "STEP4) Check exactsame " + messageAdd(partOneList1) + " with " + messageAdd(partOneList2) + " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+            partThreeList.Add(totalCount);
+            message += "STEP5) Add all the same count is " + totalCount.ToString();
 
             if (totalCount % 2 == 0)
             {
@@ -449,10 +552,163 @@ namespace New_Formula
                     result = "up";
                 }
             }
-            message += Environment.NewLine +  "Result is " + result;
+            message += Environment.NewLine +  "Result is " + result + Environment.NewLine;
+            
+            message += "====================PART THREE==================" + Environment.NewLine;
+
+            message += "Here we use " + messageAdd(partThreeList) + Environment.NewLine;
+            count = 0;
+            totalCount = 0;
+            List<int> partThree1 = new List<int>();
+            List<int> lastpart2 = new List<int>();
+            partThree1.AddRange(need01(h1 + m1));
+            for (int i = 0; i < partThree1.Count; i++)
+            {
+                for (int j = 0; j < partThreeList.Count; j++)
+                {
+                    count += exactSame(partThree1[i], partThreeList[j],2);
+                }
+            }
+            message += "STEP1) Add time " + messageAdd(partThree1) + " Check for " + messageAdd(partThreeList) + " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+            lastpart2.Add(10);
+            lastpart2.Add(11);
+            lastpart2.AddRange(partThree1);
+
+            count = 0;
+            List<int> partThree2 = new List<int>();
+            partThree2.AddRange(need01(h2 + m2));
+            for (int i = 0; i < partThree2.Count; i++)
+            {
+                for (int j = 0; j < partThreeList.Count; j++)
+                {
+                    count += exactSame(partThree1[i], partThreeList[j], 2);
+                }
+            }
+            lastpart2.AddRange(partThree2);
+            message += "STEP2) Add time " + messageAdd(partThree2) + " Check for " + messageAdd(partThreeList) + " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            count = 0;
+            int partThree3 = 9 - partThreeList[0] - partThreeList[1];
+            if (partThree3 % 2 == 0) count = 0;
+            else count = 1;
+            message += "STEP3) " + 9.ToString() + "-" + partThreeList[0].ToString() + "-" + partThreeList[1].ToString() + "=" + partThree3.ToString() + ", so same is " + count.ToString() + Environment.NewLine;
+            totalCount = count;
+
+            count = 0;
+            for (int i = 0; i < partThreeList.Count; i++)
+            {
+                count += exactSame(partThreeList[i], totalCount, 2);
+            }
+            message += "STEP4) Here total is " + totalCount.ToString() + " same, so check with " + messageAdd(partThreeList) + " same is " + count.ToString() + Environment.NewLine;
+            int partThree4 = totalCount + partThreeList[0] + partThreeList[1];
+            totalCount += count;
+
+            count = 0;
+            partThree1.Add(h1);
+            partThree1.Add(m1);
+            partThree1.Add(h2);
+            partThree1.Add(m2);
+            partThree1.AddRange(partThree2);
+
+            for (int i = 0; i < partThree1.Count; i++)
+            {
+                count += breakdown_Same(partThree4, partThree1[i]);
+            }
+            message += "STEP5) " + partThree4.ToString() + " include breakdown with " + messageAdd(partThree1) + " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+            List<int> lastpart1 = new List<int>();
+            lastpart1.Add(5);
+            lastpart1.Add(4);
+            lastpart1.Add(partThree4);
+            message += "STEP6) " + totalCount.ToString();
+            lastpart1.Add(totalCount);
+            if (totalCount % 2 == 0)
+            {
+                message += " no opposite";
+            }
+            else
+            {
+                message += " opposite";
+                if (result == "up")
+                {
+                    result = "down";
+                }
+                else
+                {
+                    result = "up";
+                }
+            }
+            message += Environment.NewLine + "Result is " + result + Environment.NewLine;
 
 
+            message += "====================LAST PART==================" + Environment.NewLine;
+            count = 0;
+            totalCount = 0;
+            for (int i = 0; i < lastpart1.Count; i++)
+            {
+                for (int j = 0; j < lastpart2.Count; j++)
+                {
+                    count += exactSame(lastpart1[i], lastpart2[j], 2);
+                }
+            }
+            message += "STEP1) Check " + messageAdd(lastpart1) + " with " + messageAdd(lastpart2) + " same is " + count.ToString() + Environment.NewLine;
+            totalCount = count;
 
+            count = 0;
+            for (int i = 0; i < lastpart2.Count; i++)
+            {
+                count += breakdown_Same(9, lastpart2[i]);
+            }
+            totalCount += count;
+            message += "STEP2) Check 9 with " + messageAdd(lastpart2) + " same is " + count.ToString()  + Environment.NewLine;
+
+            count = 0;
+            sum = lastpart1[2] + lastpart1[3];
+            message += "STEP3) " + lastpart1[2].ToString() + "+" + lastpart1[3].ToString() + "=" + sum.ToString() + ", Check 9 with ";
+            for (int i = 0; i < lastpart2.Count; i++)
+            {
+                message += (lastpart2[i] + sum).ToString() + ", ";
+                count += breakdown_Same(9, lastpart2[i] + sum);
+            }
+            message += " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            count = 0;
+            count = sum;
+            sum = lastpart1[2] + sum;
+
+            
+            message += "STEP4) " + lastpart1[2].ToString() + "+" + count.ToString() + "=" + sum.ToString() + ", Check 9 with ";
+            count = 0;
+            for (int i = 0; i < lastpart2.Count; i++)
+            {
+                message += (lastpart2[i] + sum).ToString() + ", ";
+                count += breakdown_Same(9, lastpart2[i] + sum);
+            }
+            message += " same is " + count.ToString() + Environment.NewLine;
+            totalCount += count;
+
+            message += "STEP5) Total same is " + totalCount.ToString();
+
+            if (totalCount % 2 == 0)
+            {
+                message += " no opposite";
+            }
+            else
+            {
+                message += " opposite";
+                if (result == "up")
+                {
+                    result = "down";
+                }
+                else
+                {
+                    result = "up";
+                }
+            }
+            message += Environment.NewLine + "Result is " + result + Environment.NewLine;
             return result;
             
 
@@ -692,15 +948,64 @@ namespace New_Formula
             }
             return list;
         }
+        public List<int> addMore100(int number1, int number2)
+        {
+            List<int> list = new List<int>();
+            int number = number1 + number2;
+            if (number > 99 && (number1 % 10 == 0 || number1 / 10 % 10 == 0))
+            {
+                int x = number / 10 + number % 10;
+                list.Add(x);
+                list.Add(x + 1);
+                list.Add(2 * x + 1);
+                return list;
+            }
+
+
+            if (number1 + number2< 100)
+            {
+                list.Add(number);
+            }
+            else
+            {
+                int x = number / 10 + number % 10;
+                list.Add(x);
+                if (number / 10 % 10 == 0 || number % 10 == 0)
+                {
+                    int y = x;
+                    if (number / 10 % 10 == 0) y++;
+                    if (number % 10 == 0) y++;
+                    list.Add(y);
+                    list.Add(x + y);
+                }
+            }
+            return list;
+        }
 
         public List<int> need01(int number)
         {
             List<int> list = new List<int>();
-            list.Add(number);
+            list.AddRange(more100(number));
             if (number % 10 == 0)
             {
-                list.Add(number + 1);
-                list.Add(2 * number + 1);
+                list.AddRange(more100(number + 1));
+                list.AddRange(more100(2 * number + 1));
+            }
+            return list;
+        }
+
+        public List<int> need01more100(int number1, int number2)
+        {
+            List<int> list = new List<int>();
+            list.AddRange(more100(number1 + number2));
+            if (number1 % 10 == 0 || number2 % 10 == 0)
+            {
+                int x = number1 + number2;
+                int y = x;
+                if (number1 % 10 == 0) y++;
+                if (number2 % 10 == 0) y++;
+                list.AddRange(more100(y));
+                list.AddRange(more100(x + y)); 
             }
             return list;
         }
