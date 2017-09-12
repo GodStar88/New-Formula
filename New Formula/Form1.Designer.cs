@@ -39,6 +39,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.column = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -57,7 +58,7 @@
             this.Date_Text.Name = "Date_Text";
             this.Date_Text.Size = new System.Drawing.Size(106, 20);
             this.Date_Text.TabIndex = 1;
-            this.Date_Text.Text = "20010111";
+            this.Date_Text.Text = "20010122";
             // 
             // log
             // 
@@ -73,7 +74,7 @@
             this.Time2_Text.Name = "Time2_Text";
             this.Time2_Text.Size = new System.Drawing.Size(72, 20);
             this.Time2_Text.TabIndex = 3;
-            this.Time2_Text.Text = "11:00";
+            this.Time2_Text.Text = "02:00";
             // 
             // Time1_Text
             // 
@@ -81,7 +82,7 @@
             this.Time1_Text.Name = "Time1_Text";
             this.Time1_Text.Size = new System.Drawing.Size(75, 20);
             this.Time1_Text.TabIndex = 4;
-            this.Time1_Text.Text = "10:00";
+            this.Time1_Text.Text = "01:00";
             // 
             // Check_Text
             // 
@@ -129,11 +130,22 @@
             this.label2.TabIndex = 10;
             this.label2.Text = "column";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(403, 685);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(114, 23);
+            this.button4.TabIndex = 12;
+            this.button4.Text = "Start";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(544, 685);
+            this.ClientSize = new System.Drawing.Size(544, 720);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.column);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button3);
@@ -165,6 +177,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox column;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button4;
     }
 }
 
