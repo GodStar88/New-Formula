@@ -16,3 +16,4 @@ E:\Work\VC\New Formula\New Formula\obj\Debug\New Formula.csprojResolveAssemblyRe
 E:\Work\VC\New Formula\New Formula\obj\Debug\New_Formula.Form1.resources
 E:\Work\VC\New Formula\New Formula\obj\Debug\New_Formula.Properties.Resources.resources
 E:\Work\VC\New Formula\New Formula\obj\Debug\New Formula.csproj.GenerateResource.Cache
+E:\Work\VC\New Formula\New Formula\obj\Debug\New Formula.csproj.CoreCompileInputs.cache

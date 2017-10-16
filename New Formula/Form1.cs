@@ -733,7 +733,7 @@ namespace New_Formula
 
 
             totalCount = lastSTEP(lastStepNumber);
-
+            FORMULA1 = totalCount;
             if (totalCount % 2 == 0)
             {
                 message += " no opposite";
@@ -1138,6 +1138,40 @@ namespace New_Formula
             }
             return list;
         }
+
+        public List<int> need01more1001(int number1, int number2)
+        {
+            List<int> list = new List<int>();
+            list.AddRange(need01(number1 + number2));
+            if (number1 % 10 == 0 || number2 % 10 == 0)
+            {
+                int x = number1 + number2;
+                int y = x;
+                if (number1 % 10 == 0) y++;
+                if (number2 % 10 == 0) y++;
+                list.AddRange(need01(y));
+                list.AddRange(need01(x + y));
+            }
+            return list;
+        }
+
+
+        public List<int> need01more1003(int number1, int number2, int number3)
+        {
+            List<int> list = new List<int>();
+            list.AddRange(need01(number1 + number2 + number3));
+            if (number1 % 10 == 0 || number2 % 10 == 0)
+            {
+                int x = number1 + number2 + number3;
+                int y = x;
+                if (number1 % 10 == 0) y++;
+                if (number2 % 10 == 0) y++;
+                if (number3 % 10 == 0) y++;
+                list.AddRange(need01(y));
+                list.AddRange(need01(x + y));
+            }
+            return list;
+        }
         public int addCount(int d, int t)
         {
             //11,22,33,44 is 5 same
@@ -1286,7 +1320,25 @@ namespace New_Formula
             list.Add(x + y);
             return list;
         }
+        private List<int> dataAdd3(string date)
+        {
+            List<int> list = new List<int>();
+            char[] myArray = date.ToCharArray();
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < myArray.Length; i++)
+            {
+                int num = int.Parse(myArray[i].ToString());
 
+                x += num;
+                if (num == 0) y++;
+                else y += num;
+            }
+            list.AddRange(need01(x));
+            list.AddRange(need01(y));
+            list.AddRange(need01(x + y));
+            return list;
+        }
         private string messageAdd(List<int> list)
         {
             string msg = "";
@@ -1491,12 +1543,39 @@ namespace New_Formula
 
         private void button4_Click(object sender, EventArgs e)
         {
-            string[] excel = { "down", "up", "down", "down", "down", "down" };
-            finalStep("20080904", 04, excel);
+
+            excelThread = new ThreadStart(excelThreadStart1);
+            excelThread_Thread = new Thread(excelThread);
+            excelThread_Thread.Start();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string[] excel = new string[6];
+            string  date = Date_Text.Text;
+            string time1 = Time1_Text.Text;
+            string time2 = Time2_Text.Text;
+
+            Check_Text.Text = "4";
+            string str = step1(time1, time2, date);
+            excel[0] = str;
+            Check_Text.Text = "9";
+            str = step1(time1, time2, date);
+            excel[1] = str;
+            Check_Text.Text = "7";
+            str = step1(time1, time2, date);
+            excel[2] = str;
+            Check_Text.Text = "2";
+            str = step1(time1, time2, date);
+            excel[3] = str;
+            Check_Text.Text = "8";
+            str = step1(time1, time2, date);
+            excel[4] = str;
+            Check_Text.Text = "5";
+            str = step1(time1, time2, date);
+            excel[5] = str;
+            finalStep(date, int.Parse(Time1_Text.Text.Split(':')[0].ToLower()), excel);
             log.Text = message;
-            //             excelThread = new ThreadStart(excelThreadStart1);
-            //             excelThread_Thread = new Thread(excelThread);
-            //             excelThread_Thread.Start();
         }
 
         private void excelThreadStart1()
@@ -1547,13 +1626,13 @@ namespace New_Formula
         private string  finalStep(string date, int time, string[] excel)
         {
             //int time = 3;
-            int[] result = new[] { 2, 2, 2, 2, 1, 2 };
+            int[] result = new[] { 1, 1, 1, 1, 2, 1 };
 
-//             for (int i = 0; i < excel.Length; i++)
-//             {
-//                 if (excel[i] == "up") result[i] = 2;
-//                 else result[i] = 1;
-//             }
+            for (int i = 0; i < excel.Length; i++)
+            {
+                if (excel[i].Contains("up")) result[i] = 2;
+                else result[i] = 1;
+            }
             message = "";
             int total = 0;
             int res1 = result[0] * 100 + result[1] * 10 + result[2];
@@ -1701,6 +1780,8 @@ namespace New_Formula
                 else laststep = "UP";
             }
             message += laststep + Environment.NewLine;
+            List<int> list20 = new List<int>();
+            list20.AddRange(need01(total));
 
             //          STEP1) Check 16,7, 16 + 7 = 23 and time like here 16,17,33 for 9 same or exact 12 = 12 = 21 same
             //          STEP2) Compare 16 include breakdown with date
@@ -1778,6 +1859,8 @@ namespace New_Formula
             message += "STEP15) Check " + messageAdd(list13) + " for 9 same is " + count.ToString() + Environment.NewLine;
 
             message += "So total is " + total.ToString() + ", ";
+            
+            list20.AddRange(need01(total));
             List<int> list17 = new List<int>();
             list17.Add(total);
             list17.Add(count);            
@@ -1835,39 +1918,230 @@ namespace New_Formula
             message += "STEP3) Check " + list17[0].ToString() + " and " + list17[2].ToString() + " for breakdown same, so same is " + count.ToString() + Environment.NewLine;
 
             int near = nearest(list17[0], 9);
-            message += "STEP4) " + list17[0].ToString() + " nearest 9 is " + near.ToString() + Environment.NewLine;
+            message += "STEP4) " + list17[0].ToString() + " nearest 9 is " + near.ToString();
+            if (near % 2 == 0)
+            {
+                count = 0;
+            }
+            else count = 1;
+
+            message += ", so same is " + count.ToString() + Environment.NewLine; 
+
+
+            message += "So total is " + total.ToString() + ", " + laststep + Environment.NewLine;
+
+            list20.AddRange(need01more100(list20[0],list20[1]));
+            list20.Add(list20[0] + list20[1] + total);
+            list20.AddRange(need01more100(list20[0], total));
+            list20.AddRange(need01more100(list20[1], total));
+            count = 0;
+            for (int i = 0; i < list20.Count; i++)
+            {
+                count += breakdown_Same(9, list20[i]);
+            }
+            for (int i = 0; i < list20.Count - 1; i++)
+            {
+                for (int j = i + 1; j < list20.Count; j++)
+                {
+                    count += exactSame(list20[i], list20[j], 1);
+                }
+            }
+            message += "Check " + messageAdd(list20) + " for 9 same and exactsame, so same is " + count.ToString() + Environment.NewLine;
+            total += count;
+            message  = date + "  " + time.ToString() + Environment.NewLine;
+            message += "So total is " + total.ToString() + ", ";
+
+
+           
+            if (total % 2 != 0)
+            {
+                if (laststep == "UP")
+                {
+                    laststep = "DOWN";
+                }
+                else
+                {
+                    laststep = "UP";
+                }
+            }
+            message += laststep + Environment.NewLine;
+
+
+            message += "******** NEW LAST STEPS **********" + Environment.NewLine;
+
+            List<int> laststep1 = new List<int>();
+            // List<int> laststep6 = new List<int>();
+            laststep1.Add(total);
+            if (laststep == "UP")
+            {
+                laststep1.Add(2);
+            }
+            else laststep1.Add(1);
+            count = 0;
+            total = 0;
+            for (int i = 0; i < laststep1.Count; i++)
+            {
+                for (int j = 0; j < list16.Count; j++)
+                {
+                    count += breakdown_Same(laststep1[i], list16[j]);
+                }
+            }
+            total += count;
+            message += "STEP1) Check " + messageAdd(laststep1) + " with " + messageAdd(list16) + " for breakdown same, so same is " + count.ToString() + Environment.NewLine;
+            count = exactSame(laststep1[0], laststep1[1], 4);
+            total += count;
+            message += "STEP2) Check " + messageAdd(laststep1) + " for exactsame, so same is " + count.ToString() + Environment.NewLine;
+
+
+            List<int> lastlist3 = new List<int>();
+            for (int i = 0; i < 10; i = i + 2)
+            {
+                if (laststep1[0] % 2 == 0)
+                {
+                    if (laststep1[0] != i + 2)
+                       lastlist3.AddRange(need01more100 (i + 2, laststep1[0]));
+                }
+                else
+                {
+                    if (laststep1[0] != i + 1)
+                        lastlist3.AddRange(need01more100(i + 1, laststep1[0]));
+                }
+            }
+            List<int> lastlist4 = new List<int>();
+            for (int i = 0; i < lastlist3.Count; i++)
+            {
+                lastlist4.AddRange(need01(lastlist3[i]));
+            }
+            lastlist3.Clear();
+            for (int i = 0; i < 10; i = i + 2)
+            {
+                if (laststep1[0] % 2 == 0)
+                {
+                    if (laststep1[0] != i + 2)
+                        lastlist3.Add(i + 2);
+                }
+                else
+                {
+                    if (laststep1[0] != i + 1)
+                        lastlist3.Add(i + 1);
+                }
+            }
+
             count = 0;
             for (int i = 0; i < list16.Count; i++)
             {
-                count += exactSame(list16[i], near - list17[0],4);
-            }
-            count += breakdown_Same(near - list17[0], near);
-            total += count;
-            message += "Check " + (near - list17[0]).ToString() + " with " + messageAdd(list16) + " exactsame and Check with nearest " + near.ToString() + " for breakdown same, so same is " + count.ToString() + Environment.NewLine;
-
-            count = 0;
-            List<int> list18 = new List<int>();
-            list18.Add(list17[0] + list17[2]);
-            list18.Add(list17[0] - list17[2]);
-            for (int i = 0; i < list18.Count; i++)
-            {
-                count += breakdown_Same(list18[i], 9);
-                for (int j = 0; j < tem.Count; j++)
+                for (int j = 0; j < lastlist3.Count; j++)
                 {
-                    count += exactSame(list18[i], tem[j],1);
+                    count += breakdown_Same(list16[i], lastlist3[j]);
+                }
+                for (int j = 0; j < lastlist4.Count; j++)
+                {
+                    count += breakdown_Same(list16[i], lastlist4[j]);
                 }
             }
-            message += "STEP5) Check " + messageAdd(list18) + " for 9 and for exactsame " + messageAdd(tem) + " same is " + count.ToString() + Environment.NewLine;
             total += count;
+            message += "STEP3) Check " + messageAdd(lastlist4) + " and " + messageAdd(lastlist3) + " with time " + messageAdd(list16) + " for breakdown same, so same is " + count.ToString() +  Environment.NewLine;
+
+            count = 0;
+            for (int i = 0; i < list16.Count; i++)
+            {
+                count += exactSame(list16[i], total,1);
+            }
+            message += "STEP4) Check Total is " + total.ToString() + ", so check " + total.ToString() + " with " + messageAdd(list16) + " for exact same, so same is " + count.ToString() + Environment.NewLine;
+            total += count;
+
+            message += "STEP5) Total is " + total.ToString() + ", ";
+
+            laststep1.Add(total);
 
             if (total % 2 != 0)
             {
-                if (laststep == "UP") laststep = "DOWN";
-                else laststep = "UP";
+                if (laststep == "UP")
+                {
+                    laststep = "DOWN";
+                }
+                else
+                {
+                    laststep = "UP";
+                }
             }
-            message += "So total is " + total.ToString() + ", " + laststep + Environment.NewLine;
-            message += "==============================";
+            if (laststep == "UP")
+            {
+                laststep1.Add(2);
+            }
+            else laststep1.Add(1);
+            message += laststep + Environment.NewLine;
 
+            count = 0;
+            total = 0;
+            count += breakdown_Same(9, laststep1[0]);
+            count += breakdown_Same(9, laststep1[2]);
+            message += "STEP6) Check " + laststep1[0].ToString() + ", " + laststep1[2].ToString() + " for 9, so same is " + count.ToString() + Environment.NewLine;
+            total += count;
+
+            count = 0;
+            count += breakdown_Same(laststep1[0] + laststep1[2], laststep1[0]);
+            count += breakdown_Same(laststep1[0] + laststep1[2], laststep1[2]);
+            message += "STEP7) Check " + (laststep1[0] + laststep1[2]).ToString() + " with " + laststep1[0].ToString() + ", " + laststep1[2].ToString() + " for breakdown same is " + count.ToString() + Environment.NewLine;
+            total += count;
+
+            count = 0;
+            for (int i = 0; i < list16.Count; i++)
+            {
+                count += exactSame(list16[i], laststep1[0] + laststep1[2], 1);
+            }
+            message += "STEP8) Check " + (laststep1[0] + laststep1[2]).ToString() + " with " + messageAdd(list16) + " for exactsame is " + count.ToString() + Environment.NewLine;
+           
+            total += count;
+
+            count = 0;
+            sum = 0;
+            for (int i = 0; i < laststep1.Count; i++)
+            {
+                sum += laststep1[i];
+            }
+            for (int i = 0; i < DateList.Count; i++)
+            {
+                count += breakdown_Same(sum, DateList[i]);
+                count += exactSame(sum, DateList[i], 3);
+            }
+            message += "STEP9) Check " + sum.ToString() + " with " +  messageAdd(DateList) + " for exactsame and breakdown is " + count.ToString() + Environment.NewLine;
+            total += count;
+
+            List<int> laststep10 = new List<int>();
+            laststep10.Add(laststep1[0]);
+            laststep10.Add(laststep1[2]);
+            laststep10.Add(laststep1[0] + laststep1[2]);
+            laststep10.Add(sum);
+            laststep10.AddRange(list16);
+            laststep10.AddRange(DateList);
+            count = 0;
+            for (int i = 0; i < laststep10.Count - 1; i++)
+            {
+                for (int j = i + 1; j < laststep10.Count; j++)
+                {
+                    count += exactSame(laststep10[i], laststep10[j], 1);
+                }
+            }
+            message += "STEP10) Check " + messageAdd(laststep10) + " for exactsame is " + count.ToString() + Environment.NewLine;
+            total += count;
+
+            message += "STEP11) Total is " + total.ToString() + ", ";
+            FORMULA2 = total;
+            if (total % 2 != 0)
+            {
+                if (laststep == "UP")
+                {
+                    laststep = "DOWN";
+                }
+                else
+                {
+                    laststep = "UP";
+                }
+            }
+            message += laststep + Environment.NewLine;
+
+            message += "==============================";
             File.AppendAllText("log.txt", message);
 
             return laststep;
@@ -1878,6 +2152,7 @@ namespace New_Formula
             if (num1 == num2) return 2;
             else return 1;
         }
+
 
         private int exactsameList(List<int> list)
         {
@@ -1904,6 +2179,345 @@ namespace New_Formula
                 if (final == 1) return "UP";
                 else return "DOWN";
             }
+        }
+
+
+
+        int FORMULA1 = 0;
+        int FORMULA2 = 0;
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string time1 = Time1_Text.Text;
+            string time2 = Time2_Text.Text;
+            string date = Date_Text.Text;
+            step1(time1, time2, date);
+
+
+
+            string[] excel = new string[6];
+
+            Check_Text.Text = "4";
+            string str = step1(time1, time2, date);
+            excel[0] = str;
+            Check_Text.Text = "9";
+            str = step1(time1, time2, date);
+            excel[1] = str;
+            Check_Text.Text = "7";
+            str = step1(time1, time2, date);
+            excel[2] = str;
+            Check_Text.Text = "2";
+            str = step1(time1, time2, date);
+            excel[3] = str;
+            Check_Text.Text = "8";
+            str = step1(time1, time2, date);
+            excel[4] = str;
+            Check_Text.Text = "5";
+            str = step1(time1, time2, date);
+            excel[5] = str;
+            finalStep(date, int.Parse(Time1_Text.Text.Split(':')[0].ToLower()), excel);
+
+
+            message = "★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★" + Environment.NewLine;
+            message += "FORMULA ONE : " + FORMULA1.ToString() + "           ";
+            message += "FORMULA TWO : " + FORMULA2.ToString() + Environment.NewLine;
+
+
+            // STEP1) We add 7+3=10,11,21, then we check 10,11,21 with 7,3 is two same with breakdown
+            List<int> list1 = new List<int>();
+            list1.AddRange(need01(FORMULA1 + FORMULA2));
+            int count = 0;
+            int total = 0;
+            for (int i = 0; i < list1.Count; i++)
+            {
+                count += breakdown_Same(list1[i], FORMULA1);
+                count += breakdown_Same(list1[i], FORMULA2);
+            }
+            total += count;
+            message += "STEP1) We check " + messageAdd(list1) + " with " + FORMULA1.ToString() + ", " + FORMULA2.ToString() + " for breakdown same, so same is " + count.ToString() + Environment.NewLine;
+
+
+            // STEP2) Then we check 6,7,13 and date 20010104 and 8,12,20,21,41 for breakdown same is 4 same
+
+            int time = int.Parse(Time1_Text.Text.Split(':')[0].ToLower());
+            List<int> list2 = new List<int>();
+            list2.Add(time);
+            list2.Add(time + 1);
+            list2.Add(2 * time + 1);
+            DateList.Clear();
+            dateAdd(date);
+            list2.AddRange(DateList);
+            list2.AddRange(dataAdd3(date));
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 3; j < list2.Count; j++)
+                {
+                    count += breakdown_Same(list2[i], list2[j]);
+                }
+            }
+            total += count;
+            message += "STEP2) We check " + messageAdd(list2) + " for breakdown same is " + count.ToString() + Environment.NewLine;
+
+            // STEP3) Need to check like here 7,3,10,11,21 with date and time for exact 7 = 7 or 12 = 12 = 21 same
+            count = 0;
+            // list1.Add(FORMULA1);
+            // list1.Add(FORMULA2);
+            for (int i = 0; i < list1.Count; i++)
+            {
+                for (int j = 0; j < list2.Count; j++)
+                {
+                    count += exactSame(list1[i], list2[j], 4);
+                }
+            }
+            message += "STEP3) We check " + messageAdd(list1) + " with date and time for exact same, so same is " + count.ToString() + Environment.NewLine;
+            total += count;
+
+            // STEP4) We need to check 7,3,10,11,21 for 9 same like here is 7,11,18 is one same for 9 and 18 and 7 one more same, no need to check time for 9 same
+            count = 0;
+
+            for (int i = 0; i < list1.Count; i++)
+            {
+                count += breakdown_Same(list1[i], 9);
+            }
+            message += "STEP4) We Check " + messageAdd(list1) + " for 9, so same is " + count.ToString() + Environment.NewLine;
+            total += count;
+
+            // STEP5) Check i) 7 with time2 7 is one same, so now we have 2+4+1=7 same here no need to check 7 same and time2 for same and no need to check with 7
+            // count = exactSame(list2[1], FORMULA1, 4);
+            // total += count;
+            // message += "STEP5) We check " + FORMULA1.ToString() + " with " + list2[1].ToString() + " is " + count.ToString() + ", total is " + total.ToString() + Environment.NewLine;
+
+            // STEP6) Need to check 7 for exact same with date no same
+            count = 0;
+            for (int i = 3; i < list2.Count; i++)
+            {
+                count += exactSame(total, list2[i], 1);
+            }
+            message += "STEP6) We Check " + total.ToString() + " for exact same with date " + count.ToString() + Environment.NewLine;
+            total += count;
+
+            List<int> fewstep1 = new List<int>();
+            fewstep1.Add(total);
+            fewstep1.Add(FORMULA1);
+            fewstep1.Add(FORMULA2);
+
+            int fewstep0 = 0;
+
+            string result = "";
+            if (updown(FORMULA1 % 2, FORMULA2 % 2) % 2 == 0)
+            {
+                result = "up";
+                fewstep0 += 2;
+            }
+            else
+            {
+                result = "down";
+                fewstep0 += 1;
+            }
+
+
+            
+            message += "So total is " + total.ToString() + " and FORMULA ONE , FORMULA TWO is " + FORMULA1.ToString() + ", " + FORMULA2.ToString() + " is " + result + ", So result is ";
+            if (total % 2 != 0)
+            {
+                if (result == "up")
+                {
+                    result = "down";
+                }
+                else
+                {
+                    result = "up";
+                }
+            }
+            if (result == "up") fewstep0 += 2;
+            else fewstep0 += 1;
+            message += result + Environment.NewLine;
+
+
+            message += "====================LAST FEW STEPS======================" + Environment.NewLine;
+
+            // Date is 20010108 Time is 10,11,21
+            // STEP1) Check 35,22,14 for 4 same
+            count = 0;
+            total = 0;
+            for (int i = 0; i < fewstep1.Count; i++)
+            {
+                count += breakdown_Same(fewstep1[i], fewstep0);
+            }
+            message += "STEP1) Check " + messageAdd(fewstep1) + " for " + fewstep0.ToString() + " same is " + count.ToString() + Environment.NewLine;
+            total += count;
+            // STEP2) Check i)22+ii)14 for 9 and 4 same
+            count = breakdown_Same(fewstep1[1] + fewstep1[2], 9);
+            count += breakdown_Same(fewstep1[1] + fewstep1[2], fewstep0);
+            message += "STEP2) Check " + (fewstep1[1] + fewstep1[2]).ToString() + " for 9 and " + fewstep0.ToString() + " same is " + count.ToString() + Environment.NewLine;
+            total += count;
+            // STEP3) Add 4 to third number here ii)14
+            count = breakdown_Same(4 + fewstep1[2], 9);
+            count += breakdown_Same(4 + fewstep1[2], fewstep0);
+            message += "STEP3) Check " + (4 + fewstep1[2]).ToString() + " for 9 and " + fewstep0.ToString() + " same is " + count.ToString() + Environment.NewLine;
+            total += count;
+            // STEP4) Add 8 to third number here ii)14
+            count = breakdown_Same(8 + fewstep1[2], 9);
+            count += breakdown_Same(8 + fewstep1[2], fewstep0);
+            message += "STEP4) Check " + (8 + fewstep1[2]).ToString() + " for 9 and " + fewstep0.ToString() + " same is " + count.ToString() + Environment.NewLine;
+            total += count;
+            // STEP5) Check for total same and check like here 35, 22, 14 for breakdown same
+            count = 0;
+            for (int i = 0; i < fewstep1.Count; i++)
+            {
+                count += breakdown_Same(total, fewstep0);
+            }
+            message += "STEP5) Check " + total.ToString() + " for " + messageAdd(fewstep1) + " same is " + count.ToString() + Environment.NewLine;
+            total += count;
+            message += "So total is " + total.ToString() + ", result is ";
+            if (total % 2 != 0)
+            {
+                if (result == "up")
+                {
+                    result = "down";
+                }
+                else
+                {
+                    result = "up";
+                }
+            }
+            message += result + Environment.NewLine;
+
+
+            message += "====================================================================" + Environment.NewLine;
+            List<int> additions2 = new List<int>();
+            List<int> additions3 = new List<int>();
+            count = 0;
+            int lasttotal = total;
+            total = 0;
+            for (int i = 0; i < fewstep1.Count; i++)
+            {
+                count += exactSame(lasttotal, fewstep1[i], 1);
+                count += breakdown_Same(lasttotal, fewstep1[i]);
+            }
+            total += count;
+            message += "STEP1) Check " + lasttotal.ToString() + " with " + messageAdd(fewstep1) + " for exactsame and breakdown, so same is " + count.ToString() + Environment.NewLine;
+            additions2.AddRange(fewstep1);
+
+            count = 0;
+            List<int> lastfewstep = new List<int>();
+            lastfewstep.AddRange(need01more1001(fewstep1[0], fewstep1[1]));
+            for (int i = 0; i < lastfewstep.Count; i++)
+            {
+                count += exactSame(lasttotal, lastfewstep[i], 1);
+                count += breakdown_Same(lasttotal, lastfewstep[i]);
+            }
+            total += count;
+            message += "STEP2) Check " + lasttotal.ToString() + " with " + messageAdd(lastfewstep) + " for exactsame and breakdown, so same is " + count.ToString() + Environment.NewLine;
+            additions2.AddRange(lastfewstep);
+            additions3.AddRange(lastfewstep);
+
+            count = 0;
+            lastfewstep.Clear();
+            lastfewstep.AddRange(need01more1001(fewstep1[2], fewstep1[1]));
+            for (int i = 0; i < lastfewstep.Count; i++)
+            {
+                count += exactSame(lasttotal, lastfewstep[i], 1);
+                count += breakdown_Same(lasttotal, lastfewstep[i]);
+            }
+            total += count;
+            message += "STEP3) Check " + lasttotal.ToString() + " with " + messageAdd(lastfewstep) + " for exactsame and breakdown, so same is " + count.ToString() + Environment.NewLine;
+            additions2.AddRange(lastfewstep);
+            additions3.AddRange(lastfewstep);
+
+            lastfewstep.Clear();
+            lastfewstep.AddRange(need01more1003(fewstep1[2], fewstep1[1], fewstep1[0]));
+            for (int i = 0; i < lastfewstep.Count; i++)
+            {
+                count += exactSame(lasttotal, lastfewstep[i], 1);
+                count += breakdown_Same(lasttotal, lastfewstep[i]);
+            }
+            total += count;
+            message += "STEP4) Check " + lasttotal.ToString() + " with " + messageAdd(lastfewstep) + " for exactsame and breakdown, so same is " + count.ToString() + Environment.NewLine;
+            additions2.AddRange(lastfewstep);
+            additions3.AddRange(lastfewstep);
+
+            int additionsTemp = count;
+            count = 0;
+            List<int> additions1 = new List<int>();
+
+            // additions1
+            // Next Step) Add 14 + 8 + 12 = 34 + 0 = 34,35,69, check for 9 same and 0 same
+
+            //             for (int i = 0; i < lastfewstep.Count; i++)
+            //             {
+            //                 additions1.AddRange(need01(lastfewstep[i] + additionsTemp));
+            //             }
+            //             for (int i = 0; i < additions1.Count; i++)
+            //             {
+            //                 count += breakdown_Same(additions1[i], 9);
+            //             }
+            //             message += "STEP5) Check " + messageAdd(additions1) + " for 9 same is " + count.ToString() + Environment.NewLine;
+
+            // additions2
+            // Check for 9 also in STEP1 to STEP4 so here 28 and 39 is two more same
+
+            // for (int i = 0; i < additions2.Count; i++)
+            // {
+            //    count += breakdown_Same(additions2[i], 9);
+            // }
+            // message += "STEP5) Check for 9 in (STEP1 to STEP4) " + messageAdd(additions2) + ", so same is " + count.ToString() + Environment.NewLine;
+
+
+            // additions3
+            // Check for 2 also in STEP2 to STEP4 so here 28 and 39 is two more same
+
+            // for (int i = 0; i < additions3.Count; i++)
+            // {
+            //     count += breakdown_Same(additions3[i], 2);
+            // }
+            // message += "STEP5) Check for 2 in (STEP2 to STEP4) " + messageAdd(additions3) + ", so same is " + count.ToString() + Environment.NewLine;
+
+            // additions4
+            // Check 6 with 25,6,11,31,17,42   6 is lasttotal
+
+            // for (int i = 0; i < additions2.Count; i++)
+            // {
+            //     count += breakdown_Same(total, additions2[i]);
+            // }
+            // message += "STEP5) Check for " + total.ToString() + " with " + messageAdd(additions2) + ", So same is " + count.ToString() + Environment.NewLine;
+
+            // Add 6 to 25,6,11,31,17,42 like 25 + 6 = 31 …. To check for 9 same
+
+            List<int> additions5 = new List<int>();
+            if (total == 0)
+            {
+                additions5.AddRange(additions2);
+            }
+            else
+            {
+                for (int i = 0; i < additions2.Count; i++)
+                {
+                    additions5.AddRange(need01more1001(additions2[i], total));
+                }
+            }
+            for (int i = 0; i < additions5.Count; i++)
+            {
+                count += breakdown_Same(9, additions5[i]);
+            }
+            message += "STEP5) Check for 9 with " + messageAdd(additions5) + ", so same is " + count.ToString() + Environment.NewLine;
+            total += count;
+            message += "So total is " + total.ToString() + ", result is ";
+            if (total % 2 != 0)
+            {
+                if (result == "up")
+                {
+                    result = "down";
+                }
+                else
+                {
+                    result = "up";
+                }
+            }
+            message += result + Environment.NewLine;
+
+
+            log.Text = message;
         }
     }
 }
